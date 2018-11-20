@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<style>
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;    
+}
+
+.loadcenter {
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    display: block;
+     
+}
+
+#loading {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+
+
+</style>
+</head>
+<body>
+<div id="loading">
+  <img id="load" src="load.gif" width="128" height="128" class="loadcenter" alt="load" border="0px">
+</div>
+
+<img id="picimg" width="200" height="200" class="center" alt="picture" border="1px">
+<input id="pic" type="file" accept="image/png, image/jpeg" onchange="preview(this);">
+<input id="picb" value="Upload"  type="button" disabled onclick="upload();">
+</body>
+
+<script>
+function onloading(){
+document.getElementById("loading").style.display = "block";
+}
+function offloading(){
+document.getElementById("loading").style.display = "none";
+}
+
+
+
+function upload(){
+onloading();
+var file = document.getElementById('pic').files[0];
+var reader=new FileReader();
+
+reader.addEventListener("load", function () {
+    var data=reader.result;
+  }, false);
+
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+
+}
+
+function preview(e){
+var pic= document.getElementById('picimg');
+var upbutton= document.getElementById('picb');
+
+if(e.value!="")
+{
+var file = document.getElementById('pic').files[0];
+var reader=new FileReader();
+
+reader.addEventListener("load", function () {
+    pic.src = reader.result;
+    upbutton.disabled=false;
+  }, false);
+
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+}
+else{
+    pic.src="";
+    upbutton.disabled=true;
+}
+
+}
+
+</script>
+
+</html>
