@@ -1,98 +1,258 @@
-<!DOCTYPE HTML>
+
 <html>
 <head>
-<style>
-.center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;    
-}
-
-.loadcenter {
-    position: absolute;
-    top: 40%;
-    left: 40%;
-    display: block;
-     
-}
-
-#loading {
-    position: fixed;
-    display: none;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 2;
-    cursor: pointer;
-}
-
-
-</style>
+<script src="jquery-1.12.4.js"></script>
+<script src="highcharts.js"></script>
+<script src="drilldown.js"></script>
 </head>
-<body>
-<div id="loading">
-  <img id="load" src="load.gif" width="128" height="128" class="loadcenter" alt="load" border="0px">
-</div>
 
-<img id="picimg" width="200" height="200" class="center" alt="picture" border="1px">
-<input id="pic" type="file" accept="image/png, image/jpeg" onchange="preview(this);">
-<input id="picb" value="Upload"  type="button" disabled onclick="upload();">
-</body>
+<body>
+<div id="group" style="width:50%; height:50%;position: absolute; top:0; left:0;background:red;"></div>
+<div id="class" style="width:50%; height:50%;position: absolute; top:0; right:0;background:green;"></div>
+<div id="attend" style="width:50%; height:50%;position: absolute; bottom:0; left:0;background:blue;"></div>
+<div id="income" style="width:50%; height:50%;position: absolute; bottom:0; right:0;background:red;"></div>
+
 
 <script>
-function onloading(){
-document.getElementById("loading").style.display = "block";
-}
-function offloading(){
-document.getElementById("loading").style.display = "none";
-}
+$(function () {
+    
+Highcharts.chart('group', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Societal Group'
+    },
+    tooltip: {
+        pointFormat: '{series.y}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                }
+            }
+        }
+    },
+    series: [{
+        name: 'Group',
+        colorByPoint: true,
+        data: [{
+            name: 'Chrome',
+            y: 61.41,
+            sliced: true,
+            selected: true,
+            drilldown: 'chrome'
+        }, {
+            name: 'Other',
+            y: 2.61,
+            drilldown: 'other'
+        }]
+    }],
+     drilldown: {
+            series: [{
+                id: 'chrome',
+                data: [
+                    ['Cats', 4],
+                    ['Dogs', 2],
+                    ['Cows', 1],
+                    ['Sheep', 2],
+                    ['Pigs', 1]
+                ]
+            }, {
+                id: 'other',
+                data: [
+                    ['Apples', 4],
+                    ['Oranges', 2]
+                ]
+            }]
+        }
+});
+
+Highcharts.chart('class', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Class Group'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                }
+            }
+        }
+    },
+    series: [{
+        name: 'Brands',
+        colorByPoint: true,
+        data: [{
+            name: 'Chrome',
+            y: 61.41,
+            sliced: true,
+            selected: true
+        }, {
+            name: 'Internet Explorer',
+            y: 11.84
+        }, {
+            name: 'Other',
+            y: 2.61
+        }]
+    }]
+});
+
+Highcharts.chart('attend', {
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        text: 'Historic World Population by Region'
+    },
+    subtitle: {
+        text: 'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
+    },
+    xAxis: {
+        categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
+        title: {
+            text: null
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Population (millions)',
+            align: 'high'
+        },
+        labels: {
+            overflow: 'justify'
+        }
+    },
+    tooltip: {
+        valueSuffix: ' millions'
+    },
+    plotOptions: {
+        bar: {
+            dataLabels: {
+                enabled: true
+            }
+        }
+    },
+    legend: {
+        layout: 'horizontal',
+        align: 'right',
+        verticalAlign: 'top',
+        x: -40,
+        y: 80,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+        shadow: true
+    },
+    credits: {
+        enabled: false
+    },
+    series: [{
+        name: 'Year 1800',
+        data: [107, 31, 635, 203, 2]
+    }, {
+        name: 'Year 1900',
+        data: [133, 156, 947, 408, 6]
+    }, {
+        name: 'Year 2000',
+        data: [814, 841, 3714, 727, 31]
+    }, {
+        name: 'Year 2016',
+        data: [1216, 1001, 4436, 738, 40]
+    }]
+});
+
+Highcharts.chart('income', {
+
+    title: {
+        text: 'Solar Employment Growth by Sector, 2010-2016'
+    },
+
+    subtitle: {
+        text: 'Source: thesolarfoundation.com'
+    },
+
+    yAxis: {
+        title: {
+            text: 'Number'
+        }
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle'
+    },
+
+    plotOptions: {
+        series: {
+            label: {
+                connectorAllowed: false
+            },
+            pointStart: 2010
+        }
+    },
+
+    series: [{
+        name: 'Installation',
+        data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+    }, {
+        name: 'Manufacturing',
+        data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+    }, {
+        name: 'Sales & Distribution',
+        data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
+    }, {
+        name: 'Project Development',
+        data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
+    }, {
+        name: 'Other',
+        data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
+    }],
+
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+            }
+        }]
+    }
+
+});
 
 
-
-function upload(){
-onloading();
-var file = document.getElementById('pic').files[0];
-var reader=new FileReader();
-
-reader.addEventListener("load", function () {
-    var data=reader.result;
-  }, false);
-
-  if (file) {
-    reader.readAsDataURL(file);
-  }
-
-}
-
-function preview(e){
-var pic= document.getElementById('picimg');
-var upbutton= document.getElementById('picb');
-
-if(e.value!="")
-{
-var file = document.getElementById('pic').files[0];
-var reader=new FileReader();
-
-reader.addEventListener("load", function () {
-    pic.src = reader.result;
-    upbutton.disabled=false;
-  }, false);
-
-  if (file) {
-    reader.readAsDataURL(file);
-  }
-}
-else{
-    pic.src="";
-    upbutton.disabled=true;
-}
-
-}
-
+});
 </script>
 
+</body>
 </html>
